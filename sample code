@@ -1,0 +1,63 @@
+<!-- Reference document: https://developer.salesforce.com/docs/marketing/marketing-cloud/guide/ampscript.html
+Also, I recommend ampscript.guide. It is worth buying their subscription.  -->
+
+<script runat="server" language="ampscript">
+
+/* This ampscript code block  also works */
+
+</script>
+
+
+%%[
+  /* This is comment */ 
+
+VAR @myName, @age, @debug, @startTime, @endTime
+SET @debug = false
+SET @myName = "My name is Vikram"
+SET @firstName = [First Name] /* personalization string*/
+SET @age = 40
+
+@startTime = Now()
+
+Output(Now())
+
+IF(@debug) THEN Output(v(@myName))
+    ELSEIF (@age> 35 OR @age<50 AND NOT EMPTY (@myName)) THEN  
+                  OutputLine(Concat("<br>", @myName," and age is ",@age))
+    ELSE OutputLine(Concat("My age is less than 35","<br>"))              
+ENDIF
+
+FOR @i = 1 TO 10 DO
+      /* there is no break or continue keyword in ampscript. you will have to write workaround given below*/
+      Output(Concat("<br>",v(@myName)," and i = ",@i))
+NEXT @i
+
+/* workaround for breaking the loop. */
+for @i = 1 to 5 do
+    IF @break != 'true' THEN
+          OUTPUT(CONCAT('Loop # ', @i, '<br /><br />'))
+          if @i == 1 THEN
+             SET @break = 'true'
+          endif 
+    ENDIF
+next @i
+
+]%%
+
+<p> Dear %%=Iif(not Empty(FirstName), FirstName, "Valued Member")=%% </p>
+<p> %%=ProperCase([Full Name])=%% <p>  /* This is personalization string */
+<p> %%=ProperCase(v(@myName))=%% <p>   /* This is ampscript variable */ 
+%%[Output(Format([Birthday],"dd/MM/yyyy"))]%%
+
+<!-- For detailed date and time formatting, please refer: https://developer.salesforce.com/docs/marketing/marketing-cloud/guide/dateTimeFormatting.html
+and https://developer.salesforce.com/docs/marketing/marketing-cloud/guide/formatAndFormatDate.html -->
+  
+
+
+<!--  For detailed date and time formatting, please refer: https://developer.salesforce.com/docs/marketing/marketing-cloud/guide/dateTimeFormatting.html
+and https://developer.salesforce.com/docs/marketing/marketing-cloud/guide/formatAndFormatDate.html -->
+
+
+
+
+
