@@ -49,15 +49,97 @@ next @i
 <p> %%=ProperCase(v(@myName))=%% <p>   /* This is ampscript variable */ 
 %%[Output(Format([Birthday],"dd/MM/yyyy"))]%%
 
-<!-- For detailed date and time formatting, please refer: https://developer.salesforce.com/docs/marketing/marketing-cloud/guide/dateTimeFormatting.html
-and https://developer.salesforce.com/docs/marketing/marketing-cloud/guide/formatAndFormatDate.html -->
+<!-- Personalization strings -->
+  
+If you have a Profile Attribute named Member ID, then you can reference it as an attribute personalization string in a AMPscript block as [Member ID] or inline like %%Member ID%%.
+
+The same is true if you are sending to a Data Extension with a field named Member ID.
+ 
+%%[
+
+var @firstName, @age
+set @firstName = [First Name]
+set @age = Age
+
+]%%  
+  
+Apart from above, there are lot of System level personalization strings available.
+For complete list: https://help.salesforce.com/s/articleView?id=sf.mc_es_available_personalization_strings.htm&type=5
+  
+%%[
+SET @SubKey      = _subscriberkey
+SET @emailaddr   = emailaddr
+SET @jobid       = jobid
+SET @emailid     = _emailid
+SET @PreHeader   = _PreHeader
+SET @emailName   = emailname_
+SET @IsTestSend  = _IsTestSend
+SET @MID         = memberid
+SET @msgcontext  = _messagecontext
+SET @replyname   = replyname
+SET @replyemail  = replyemailaddress
+SET @SendDEname  = _DataSourceName
+]%%
   
 
+  
+  %%[
+/*Arithmetic Operations or Math Function*/
 
-<!--  For detailed date and time formatting, please refer: https://developer.salesforce.com/docs/marketing/marketing-cloud/guide/dateTimeFormatting.html
-and https://developer.salesforce.com/docs/marketing/marketing-cloud/guide/formatAndFormatDate.html -->
+VAR @num1, @num2, @num3 
+SET @num1 = 5
+SET @num2= 10
+SET @num3 =20
+]%%
+
+%%=Add(@num1,@num2)=%%  /* Output: 15 */
+%%=Subtract(@num2,@num1)=%%  /* Output: 5 */
+%%=Divide(@num2,@num1)=%%  /* Output: 2 */
+%%=Multiply(@num2, @num1)=%%   /* Output: 50(10*5) */
+%%=Mod(@num2,@num1)=%%    /* Output: 0(it is remainder of 10/5) */
+%%=Add(@num1,Add(@num2,@num3))=%%  /* Can't use Add(@num1,@num2,@num3) */
+ 
+
+For detailed Math Function, please refer: https://ampscript.guide/math-functions/
+or https://developer.salesforce.com/docs/marketing/marketing-cloud/guide/Add.html
 
 
+/* String Methods */
+
+%%=Char(65)=%% /* Output: A */
+%%=Char(65,3)=%% /* Output: AAA */
+%%=FormatNumber(125,"C2")=%% /* Output: $125.00 */
+%%=IsPhoneNumber('5555555555')=%% /* Output: True */
+%%=IsEmailAddress('joe@example.com')=%%  /* Output: True */
+%%=Uppercase('Vikram')=%%  /* Output: VIKRAM */
+%%=Lowercase('ViKRam')=%%  /* Output: vikram */
+%%=Propercase('ViKRam')=%% /* Output: Vikram */
+%%=Trim('   Text   ')=%%   /* Output: Text */
+%%=Substring('abcdef',2,3)=%% /* Output: bcd */
+%%=ReplaceList('ABCDEFG', 'X', 'A', 'C', 'E', 'G')%%= /* Output: XBXDXFX */
 
 
+%%[ VAR @abc, 
+SET @abc=4326
+]%%
+%%=IndexOf(@abc,2)=%% /* Output: 3 */
+%%=Length(@abc)=%% /* Output: 4 */
+%%=IIF(EMPTY(@abc),'123',@abc)=%%  /*  the @abc variable is not empty so Output: 123  */
+%%=Empty(@abc)=%% /* Output: False */
+%%=IsNull(@abc)=%% /* Output: False */
 
+
+<!-- Date-Time Function -->
+
+%%[ 
+SET @date1 = "2022-05-18"
+SET @date2 = "2022-05-19"
+SET @CurrentTime = Now()
+]%%
+
+%%=DateDiff(@date1,@date2, 'D')=%% /* output: 1 */
+%%=Datepart(@date1,'year')=%% /* output: 2022 */
+%%=v(@CurrentTime)=%%  
+
+<!--  For detailed date-time function, please refer: https://ampscript.guide/date-and-time-functions/ 
+And https://developer.salesforce.com/docs/marketing/marketing-cloud/guide/DateAdd.html -->
