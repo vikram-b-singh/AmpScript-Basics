@@ -125,8 +125,8 @@ SET @abc=4326
 %%=IndexOf(@abc,2)=%% /* Output: 3 */
 %%=Length(@abc)=%% /* Output: 4 */
 %%=IIF(EMPTY(@abc),'123',@abc)=%%  /*  the @abc variable is not empty so Output: 123  */
-%%=Empty(@abc)=%% /* Output: False */
-%%=IsNull(@abc)=%% /* Output: False */
+%%=Empty(@abc)=%% /* Output: False . checks for both empty and null*/
+%%=IsNull(@abc)=%% /* Output: False  works only for DE fields */
 
 
 <!-- Date-Time Function -->
